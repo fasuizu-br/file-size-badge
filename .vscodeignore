@@ -1,0 +1,46 @@
+# Source files
+src/**
+**/*.ts
+
+# Test files
+**/*.test.ts
+**/__tests__/**
+**/__mocks__/**
+
+# Development configuration
+tsconfig.json
+jest.config.js
+eslint.config.js
+.gitignore
+.husky/**
+
+# Development documentation
+PUBLISHING.md
+
+# Demo assets
+demo.webp
+
+# Dependencies (should already be excluded, but being explicit)
+node_modules/**
+
+# Build artifacts that shouldn't be in package
+*.vsix
+
+# Git files
+.git/**
+
+# IDE files
+.vscode/**
+.idea/**
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# SVG files (not allowed in extensions)
+*.svg

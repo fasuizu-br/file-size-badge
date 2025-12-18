@@ -1,0 +1,57 @@
+{
+  "name": "file-size-badge",
+  "displayName": "File Size Badge",
+  "description": "Displays file sizes as badges in the file explorer and shows the active file size in the status bar.",
+  "version": "1.0.0",
+  "publisher": "silvioprog",
+  "license": "MIT",
+  "icon": "icon.png",
+  "readme": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/silvioprog/file-size-badge"
+  },
+  "keywords": [
+    "explorer",
+    "filesize",
+    "statusbar"
+  ],
+  "categories": [
+    "Other"
+  ],
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint .",
+    "test": "jest",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "**/*": [
+      "eslint --fix",
+      "prettier --write --ignore-unknown"
+    ]
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.10.4",
+    "@types/vscode": "^1.85.0",
+    "eslint": "^9.39.2",
+    "husky": "^9.1.7",
+    "jest": "^30.2.0",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.7.4",
+    "ts-jest": "^29.4.6",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.50.0"
+  }
+}
