@@ -1,4 +1,4 @@
-import fs from "fs";
+import { readFile } from "fs/promises";
 import * as vscode from "vscode";
 import { isBinaryFile } from "isbinaryfile";
 
@@ -34,7 +34,7 @@ export const getLineCounts = async (fsPath: string) => {
     if (await isBinaryFile(fsPath)) {
       return null;
     }
-    const content = await fs.promises.readFile(fsPath, "utf8");
+    const content = await readFile(fsPath, "utf8");
     const lines = content.split(/\r?\n/);
 
     return {

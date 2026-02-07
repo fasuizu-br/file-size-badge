@@ -44,7 +44,7 @@ export let statusBar = vscode.window.createStatusBarItem(
   ...getStatusBarConfig()
 );
 
-export const updateStatusBar = async (): Promise<void> => {
+export const updateStatusBar = async () => {
   const uri = getUri();
   if (!uri || uri.scheme !== "file") {
     statusBar.hide();

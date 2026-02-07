@@ -1,12 +1,10 @@
-import fs from "fs";
+import { readFile } from "fs/promises";
 import * as vscode from "vscode";
 import { isBinaryFile } from "isbinaryfile";
 import { formatLoc, getLineCounts } from "../loc";
 
-jest.mock("fs", () => ({
-  promises: {
-    readFile: jest.fn()
-  }
+jest.mock("fs/promises", () => ({
+  readFile: jest.fn()
 }));
 jest.mock("vscode");
 jest.mock("isbinaryfile");
@@ -37,19 +35,16 @@ describe("loc", () => {
   describe("getLineCounts", () => {
     it("should return line counts for a valid file", async () => {
       const content = "line 1\nline 2\nline 3";
-      (fs.promises.readFile as jest.Mock).mockResolvedValue(content);
+      (readFile as jest.Mock).mockResolvedValue(content);
 
       const result = await getLineCounts("/path/to/file.txt");
       expect(result).toEqual({ total: 3, loc: 3 });
-      expect(fs.promises.readFile).toHaveBeenCalledWith(
-        "/path/to/file.txt",
-        "utf8"
-      );
+      expect(readFile).toHaveBeenCalledWith("/path/to/file.txt", "utf8");
     });
 
     it("should exclude blank lines from LOC count", async () => {
       const content = "line 1\n\nline 2\n  \nline 3";
-      (fs.promises.readFile as jest.Mock).mockResolvedValue(content);
+      (readFile as jest.Mock).mockResolvedValue(content);
 
       const result = await getLineCounts("/path/to/file.txt");
       expect(result).toEqual({ total: 5, loc: 3 });
@@ -57,7 +52,7 @@ describe("loc", () => {
 
     it("should handle files with only blank lines", async () => {
       const content = "\n\n  \n\t\n";
-      (fs.promises.readFile as jest.Mock).mockResolvedValue(content);
+      (readFile as jest.Mock).mockResolvedValue(content);
 
       const result = await getLineCounts("/path/to/file.txt");
       expect(result).toEqual({ total: 5, loc: 0 });
@@ -65,7 +60,7 @@ describe("loc", () => {
 
     it("should handle empty files", async () => {
       const content = "";
-      (fs.promises.readFile as jest.Mock).mockResolvedValue(content);
+      (readFile as jest.Mock).mockResolvedValue(content);
 
       const result = await getLineCounts("/path/to/file.txt");
       expect(result).toEqual({ total: 1, loc: 0 });
@@ -73,7 +68,7 @@ describe("loc", () => {
 
     it("should handle files with Windows line endings (CRLF)", async () => {
       const content = "line 1\r\nline 2\r\nline 3";
-      (fs.promises.readFile as jest.Mock).mockResolvedValue(content);
+      (readFile as jest.Mock).mockResolvedValue(content);
 
       const result = await getLineCounts("/path/to/file.txt");
       expect(result).toEqual({ total: 3, loc: 3 });
@@ -81,25 +76,21 @@ describe("loc", () => {
 
     it("should handle files with mixed line endings", async () => {
       const content = "line 1\nline 2\r\nline 3\n";
-      (fs.promises.readFile as jest.Mock).mockResolvedValue(content);
+      (readFile as jest.Mock).mockResolvedValue(content);
 
       const result = await getLineCounts("/path/to/file.txt");
       expect(result).toEqual({ total: 4, loc: 3 });
     });
 
     it("should return null when file does not exist", async () => {
-      (fs.promises.readFile as jest.Mock).mockRejectedValue(
-        new Error("File not found")
-      );
+      (readFile as jest.Mock).mockRejectedValue(new Error("File not found"));
 
       const result = await getLineCounts("/path/to/nonexistent.txt");
       expect(result).toBeNull();
     });
 
     it("should return null when readFile throws any error", async () => {
-      (fs.promises.readFile as jest.Mock).mockRejectedValue(
-        new Error("Permission denied")
-      );
+      (readFile as jest.Mock).mockRejectedValue(new Error("Permission denied"));
 
       const result = await getLineCounts("/path/to/file.txt");
       expect(result).toBeNull();
@@ -107,7 +98,7 @@ describe("loc", () => {
 
     it("should handle files with trailing newline", async () => {
       const content = "line 1\nline 2\nline 3\n";
-      (fs.promises.readFile as jest.Mock).mockResolvedValue(content);
+      (readFile as jest.Mock).mockResolvedValue(content);
 
       const result = await getLineCounts("/path/to/file.txt");
       expect(result).toEqual({ total: 4, loc: 3 });
@@ -118,7 +109,7 @@ describe("loc", () => {
 
       const result = await getLineCounts("/path/to/image.png");
       expect(result).toBeNull();
-      expect(fs.promises.readFile).not.toHaveBeenCalled();
+      expect(readFile).not.toHaveBeenCalled();
     });
   });
 

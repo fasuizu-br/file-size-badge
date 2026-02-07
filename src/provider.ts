@@ -7,9 +7,9 @@ import { formatLoc, getLineCounts } from "./loc";
 export const provider = vscode.window.registerFileDecorationProvider({
   async provideFileDecoration(uri, token) {
     if (uri.scheme !== "file" || shouldExclude(uri.fsPath)) return;
+    if (token.isCancellationRequested) return;
     const fileSize = await getFileSize(uri.fsPath);
     if (fileSize === null) return;
-
     if (token.isCancellationRequested) return;
 
     return {
