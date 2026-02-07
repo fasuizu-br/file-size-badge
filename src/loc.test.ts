@@ -2,6 +2,7 @@ import { readFile } from "fs/promises";
 import * as vscode from "vscode";
 import { isBinaryFile } from "isbinaryfile";
 import { formatLoc, getLineCounts } from "./loc";
+import { clearAll } from "./cache";
 
 vi.mock("fs/promises", () => ({
   readFile: vi.fn()
@@ -13,6 +14,7 @@ vi.mock("isbinaryfile", () => ({
 describe("loc", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    clearAll();
     vi.mocked(isBinaryFile).mockResolvedValue(false);
     vi.mocked(vscode.workspace.getConfiguration).mockImplementation(
       (section?: string) => {
